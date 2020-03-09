@@ -4,7 +4,11 @@
   "description": "Create a weather forecast site using the weather API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-web": "npm install --save-dev webpack",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "npx-fix": "npx eslint src/  --fix"
   },
   "repository": {
     "type": "git",
@@ -19,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/FelipeEnne/weader-app/issues"
   },
-  "homepage": "https://github.com/FelipeEnne/weader-app#readme"
+  "homepage": "https://github.com/FelipeEnne/weader-app#readme",
+  "devDependencies": {
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  }
 }
