@@ -1,0 +1,23 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "Create a weather forecast site using the weather API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FelipeEnne/weader-app.git"
+  },
+  "keywords": [
+    "weather",
+    "API"
+  ],
+  "author": "Felipe Enne",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FelipeEnne/weader-app/issues"
+  },
+  "homepage": "https://github.com/FelipeEnne/weader-app#readme"
+}
