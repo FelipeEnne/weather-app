@@ -1,1 +1,3 @@
-console.log('felipe');
+import diplayData from './DOMmodel';
+
+window.onload = diplayData();
