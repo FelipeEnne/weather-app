@@ -12,8 +12,6 @@ async function getAPIData() {
 
   if (data.ok === false) {
     model.style.display = 'none';
-    // eslint-disable-next-line no-alert
-    alert(data.statusText);
   } else {
     model.style.display = 'block';
   }
