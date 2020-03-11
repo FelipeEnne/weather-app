@@ -21,7 +21,7 @@ async function getAPIData() {
   return result;
 }
 
-async function displayData() {
+async function displayData(cf = 0) {
   const data = await getAPIData();
 
   const name = document.getElementById('output-name');
@@ -33,16 +33,25 @@ async function displayData() {
   const humidity = document.getElementById('output-humidity');
   const wind = document.getElementById('output-wind');
 
-
   name.innerHTML = `${data.name} , ${data.sys.country}`;
   weather.innerHTML = `${data.weather[0].main} , ${data.weather[0].description}`;
   img.setAttribute('src', `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
-  temp.innerHTML = `${parseFloat(data.main.temp - 273).toFixed(1)} °C`;
-  feel.innerHTML = `Feels like ${parseFloat(data.main.feels_like - 273).toFixed(1)} °C`;
-  minmax.innerHTML = ` Min ${parseFloat(data.main.temp_min - 273).toFixed(1)} °C
-      - Max ${parseFloat(data.main.temp_max - 273).toFixed(1)} °C`;
   humidity.innerHTML = `Humidity ${data.main.humidity} %`;
   wind.innerHTML = `Wind ${data.wind.speed} meter/sec`;
+
+  if (cf === 0) {
+    temp.innerHTML = `${parseFloat(data.main.temp - 273).toFixed(1)} °C`;
+    feel.innerHTML = `Feels like ${parseFloat(data.main.feels_like - 273).toFixed(1)} °C`;
+    minmax.innerHTML = ` Min ${parseFloat(data.main.temp_min - 273).toFixed(1)} °C
+        - Max ${parseFloat(data.main.temp_max - 273).toFixed(1)} °C`;
+  }
+
+  if (cf === 1) {
+    temp.innerHTML = `${data.main.temp.toFixed(1)} °F`;
+    feel.innerHTML = `Feels like ${data.main.feels_like.toFixed(1)} °F`;
+    minmax.innerHTML = ` Min ${data.main.temp_min.toFixed(1)} °F
+        - Max ${data.main.temp_max.toFixed(1)} °F`;
+  }
 }
 
 export default displayData;

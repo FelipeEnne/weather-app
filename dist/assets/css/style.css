@@ -30,7 +30,7 @@ body {
   padding-top: 20px;
   width: 40%;
   margin: auto;
-  height: 472px;
+  height: 510px;
   background-color: #00000094;
   color: white;
   text-align: center;
@@ -43,4 +43,8 @@ body {
 
 #output-humidity {
   margin-bottom: 30px
+}
+
+.celsiusFahrenheit {
+  margin-top: 20px;
 }
