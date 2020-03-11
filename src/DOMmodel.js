@@ -47,10 +47,10 @@ async function displayData(cf = 0) {
   }
 
   if (cf === 1) {
-    temp.innerHTML = `${data.main.temp.toFixed(1)} °F`;
-    feel.innerHTML = `Feels like ${data.main.feels_like.toFixed(1)} °F`;
-    minmax.innerHTML = ` Min ${data.main.temp_min.toFixed(1)} °F
-        - Max ${data.main.temp_max.toFixed(1)} °F`;
+    temp.innerHTML = `${(1.8 * (data.main.temp - 273) + 32).toFixed(1)} °F`;
+    feel.innerHTML = `Feels like ${(1.8 * (data.main.feels_like - 273) + 32).toFixed(1)} °F`;
+    minmax.innerHTML = ` Min ${(1.8 * (data.main.temp_min - 273) + 32).toFixed(1)} °F
+        - Max ${(1.8 * (data.main.temp_max - 273) + 32).toFixed(1)} °F`;
   }
 }
 
