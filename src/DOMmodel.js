@@ -21,7 +21,7 @@ async function getAPIData() {
   return result;
 }
 
-async function diplayData() {
+async function displayData() {
   const data = await getAPIData();
 
   const name = document.getElementById('output-name');
@@ -45,4 +45,4 @@ async function diplayData() {
   wind.innerHTML = `Wind ${data.wind.speed} meter/sec`;
 }
 
-export default diplayData;
+export default displayData;

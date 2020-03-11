@@ -1,3 +1,3 @@
-import diplayData from './DOMmodel';
+import displayData from './DOMmodel';
 
-window.onload = diplayData();
+window.onload = displayData();
