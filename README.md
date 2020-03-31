@@ -36,7 +36,7 @@ For a live version click [here](https://felipeenne.github.io/weather-app/).
 * CSS
 * Git
 * Github
-* JavaScritp
+* JavaScript
 * API
 * Bundled with Webpack
 * Linted with ESLINT
