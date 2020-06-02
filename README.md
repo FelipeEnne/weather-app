@@ -18,7 +18,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The Weather App project uses Asynchronous Javascript for fetching the weather data from a API and displaying.
+The Weather App project uses Asynchronous Javascript for fetching the weather data from na API and displaying.
 
 <img src="./dist/assets/img/print.png" alt="img" />
 
