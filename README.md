@@ -18,7 +18,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The Weather App project uses Asynchronous Javascript for fetching the weather data from na API and displaying.
+The Weather App project uses Asynchronous Javascript for fetching weather data from an API and displaying the forecast.
 
 <img src="./dist/assets/img/print.png" alt="img" />
 
@@ -53,7 +53,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 ## Contact
-* Felipe Enne - felipeenne@gmail.com | [Github Account https://github.com/FelipeEnne](https://github.com/FelipeEnne)
+Felipe Enne Mendes Ribeiro
+* Email - felipeenne@gmail.com
+* <a href="https://www.linkedin.com/in/felipe-enne/" target="_blank">LinkedIn</a>
+* <a href="https://felipeenne.com/" target="_blank">Portfolio</a>
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
