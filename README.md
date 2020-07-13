@@ -10,6 +10,7 @@
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
 * [Run This App](#run-this-app)
+* [Future work](#future-work)
 * [License](#license)
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
@@ -35,7 +36,7 @@ For a live version click [here](https://felipeenne.github.io/weather-app/).
 * HTML
 * CSS
 * Git
-* Github
+* GitHub
 * JavaScript
 * API
 * Bundled with Webpack
@@ -46,6 +47,10 @@ For a live version click [here](https://felipeenne.github.io/weather-app/).
 
 <p>Just open the dist/index.html file.</p>
 
+## Future work
+
+* You can favorite your city
+* A button that accesses your favorite city
 
 ## License
 
