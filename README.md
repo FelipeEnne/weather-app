@@ -1,3 +1,4 @@
+
 <br />
 <h1 align="center">WEATHER APP</h1>
 
@@ -67,3 +68,4 @@ Felipe Enne Mendes Ribeiro
 ## Acknowledgements
 
 * <a href="https://www.microverse.org/"> Microverse</a>  and <a href="https://www.theodinproject.com/"> Odin Project</a> .
+
