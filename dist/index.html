@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="image" property="og:image" content="https://raw.githubusercontent.com/FelipeEnne/weather-app/development/dist/assets/img/print.png">
+    <meta name="title" poperty="og:title" content="WEATHER APP">
+    <meta name="description" poperty="og:description" content="Weather App project uses Asynchronous Javascript">
+    <meta name="type" poperty="og:type" content="API">
+    <meta name="author" content="FelipeEnne">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+
+  <body>
+    <div id="backgrond">
+        
+        <form id="form-getCity"  method="GET" class="form-get-city">
+            <div id="div-getCity" class="input-group mb-3">
+                <input id="input-getCity" type="text" class="form-control" placeholder="Put your city" name="city" required>
+                <div class="input-group-append">
+                    <button id="button-getCity" class="btn btn-dark" type="submit">
+                      <svg class="icon-seach" xmlns="http://www.w3.org/2000/svg" height="24" 
+                      viewBox="0 0 24 24" width="24">
+                      <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 
+                      3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 
+                      4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 
+                      9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                    </button>
+                </div> 
+            </div>
+        </form>
+
+        <div id="output-data" class="model">
+          <h2 id="output-name"></h2>
+          <h4 id="output-weather"></h4>
+          <img id="output-img" src="#" alt="img" /> 
+          <h1 id="output-temp"></h1>
+          <h5 id="output-feel"></h5>
+          <h5 id="output-minmax"></h5>
+          <h6 id="output-humidity"></h6>
+          <h6 id="output-wind"></h6>
+          <div class="celsiusFahrenheit ">
+            <button id="buttom-celsius" type="button" class="btn btn-dark" autofocus >Celsius °C</button>
+            <button id="buttom-fahrenheit" type="button" class="btn btn-dark">Fahrenheit °F</button>
+          </div>
+        </div>
+
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
