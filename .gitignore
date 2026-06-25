@@ -1,2 +1,27 @@
-/node_modules
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Dependencies
 node_modules/
+
+# Build outputs
+# dist/ — NÃO ignorar: versionado para deploy no GitHub Pages
+build/
+.next/
+out/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Cursor local rules
+.cursor/rules/
