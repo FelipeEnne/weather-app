@@ -1,6 +1,6 @@
 # Plano de atualização de dependências
 
-Documento gerado após diagnóstico e aplicação do **Lote seguro 1** (jun/2026).
+Documento gerado após diagnóstico e aplicação dos **Lotes seguros 1 e 2** (jun/2026).
 
 ## Stack do projeto
 
@@ -12,6 +12,70 @@ Documento gerado após diagnóstico e aplicação do **Lote seguro 1** (jun/2026
 | Gerenciador | npm + `package-lock.json` |
 | Testes | Placeholder (`npm test` sempre falha) |
 | CI | Não configurado |
+
+## Resultado do Lote 2 (jun/2026)
+
+| Métrica | Antes (pós-Lote 1) | Depois (Lote 2) |
+|---------|-------------------|-----------------|
+| Total `npm audit` | 41 | **27** |
+| Critical | 4 | **0** |
+| High | 25 | **13** |
+| Moderate | 9 | **7** |
+| Low | 3 | **7** |
+| `npm run build` | OK | OK (webpack 4.47.0, ~98ms) |
+| `npm test` | Falha (placeholder) | Falha (placeholder, esperado) |
+
+### Comandos executados (Lote 2)
+
+```powershell
+npm audit fix          # sem --force
+npm install            # após overrides
+npm audit fix          # segunda passagem
+npm install            # minimatch 3.1.5
+npm audit
+npm test
+npm run build
+```
+
+### Pacotes corrigidos no Lote 2
+
+**Via `npm audit fix` (transitivos):** `cipher-base`, `pbkdf2`, `sha.js`, `browserify-sign`, `elliptic` (6.6.1), `decode-uri-component`, `ini`, `y18n`, `cross-spawn`, `ajv`, `terser`, `ssri`, `semver`, `inquirer`, `glob`, entre outros (~35 pacotes alterados no lockfile).
+
+**Via `overrides` atualizados/novos em `package.json`:**
+
+| Pacote | Lote 1 | Lote 2 | Nota |
+|--------|--------|--------|------|
+| `lodash` | 4.17.21 | **4.18.1** | 4.17.24 não existe no npm |
+| `brace-expansion` | 1.1.12 | **1.1.13** | |
+| `minimatch` | 3.1.2 | **3.1.5** | Corrige ReDoS em ESLint/glob |
+| `y18n` | — | 4.0.3 | |
+| `decode-uri-component` | — | 0.2.2 | |
+| `ini` | — | 1.3.8 | |
+| `semver` | — | 6.3.1 | |
+| `cipher-base` | — | 1.0.7 | |
+| `sha.js` | — | 2.4.12 | |
+| `pbkdf2` | — | 3.1.6 | |
+| `browserify-sign` | — | 4.2.6 | |
+| `elliptic` | — | 6.6.1 | |
+| `flatted` | — | 2.0.2 | Ainda flagged — ver restantes |
+| `cross-spawn` | — | 6.0.6 | |
+| `js-yaml` | — | 3.14.2 | Ainda flagged — ver restantes |
+| `loader-utils`, `ansi-regex` | (Lote 1) | mantidos | |
+
+### Vulnerabilidades restantes (27) — exigem Grupo B
+
+| Pacote | Severidade | Origem | Fix disponível |
+|--------|------------|--------|----------------|
+| `braces` / `micromatch` | High | `webpack` → `watchpack-chokidar2` | Webpack 5 (`--force`) |
+| `serialize-javascript` | High | `webpack` → `terser-webpack-plugin` | Webpack 5 (`--force`) |
+| `elliptic` | Low* | `webpack` → `crypto-browserify` | Webpack 5 (`--force`) |
+| `flatted` | High | `eslint` → `flat-cache` | ESLint 8+ (`--force`) |
+| `js-yaml` | Moderate | `eslint` | ESLint 8+ (`--force`) |
+| `tmp` | High | `eslint` → `inquirer` | ESLint 8+ (`--force`) |
+
+\* Advisory marca `elliptic` como `*` (todas as versões); severidade reportada como low após patches.
+
+**Não usar** `npm audit fix --force` sem aprovação — instalaria `webpack@5.107.2` e/ou `eslint@10.5.0`.
 
 ## Pacotes analisados (dependências diretas)
 
@@ -153,30 +217,38 @@ Deve ser feito agora ou depois: Opcional — branch separada
 | Lote | Status | Escopo |
 |------|--------|--------|
 | 0 | Concluído | `npm install` + baseline audit/build |
-| 1 | Concluído | Grupo A direto + overrides + remoção octicons |
-| 2 | Pendente | Overrides adicionais (`semver`, `yargs-parser`, `y18n`) com teste |
-| 3+ | Pendente | Grupo B (Webpack 5, ESLint 8, etc.) |
+| 1 | Concluído | Grupo A direto + overrides iniciais + remoção octicons |
+| 2 | **Concluído** | `npm audit fix` + overrides expandidos; 41 → 27 vulns; 0 critical |
+| 3 | Pendente | Grupo B — Webpack 5 + webpack-cli (branch `feat/webpack-5-migration`) |
+| 4 | Pendente | Grupo B — ESLint 8 + airbnb-base 15 + `.eslintrc.json` |
 
-## Lote 2 sugerido (próximo passo)
+## Branch para Lote 3 (Webpack 5)
 
-Pacotes candidatos (testar individualmente):
+Criar branch dedicada **após commit do Lote 2**:
 
-- `yargs-parser` → 13.1.2+ (via override)
-- `y18n` → 4.0.1+ (via override ou `npm audit fix` seletivo)
-- `semver` → 6.3.1 (cuidado com consumidores antigos)
+```bash
+git checkout -b feat/webpack-5-migration
+npm install webpack@5 webpack-cli@5 --save-dev
+# Ajustar webpack.config.js se necessário
+npm run build
+npm audit
+```
 
-**Não usar** `npm audit fix --force` sem aprovação explícita.
+Arquivos afetados: `package.json`, `package-lock.json`, `webpack.config.js`, `dist/main.js`.
+
+`webpack-cli@5` é mais conservador que `7.x` sugerido pelo `audit fix --force`.
 
 ## Riscos conhecidos
 
 - `npm run npx-fix` falha: não existe `.eslintrc*` no repositório (dívida pré-existente)
 - `npm test` é placeholder e sempre falha
-- `dist/main.js` foi regenerado pelo build pós-Lote 1 — incluir no commit de release
-- Vulnerabilidades restantes (~42) exigem major upgrades ou Lote 2 de overrides
+- `dist/main.js` foi regenerado pelo build pós-Lote 2 — incluir no commit de release
+- Vulnerabilidades restantes (27) exigem major upgrades (Webpack 5 / ESLint 8)
 
 ## Próximos passos
 
-1. Commit do Lote 1 (`package.json`, `package-lock.json`, `dist/main.js`, docs)
-2. Avaliar Lote 2 de overrides transitivos
-3. Planejar branch para Webpack 5 ou Vite
+1. Commit do Lote 2 (`package.json`, `package-lock.json`, `dist/main.js`, `docs/DEPENDENCY_UPGRADE_PLAN.md`)
+2. Abrir branch `feat/webpack-5-migration` para Webpack 5
+3. ESLint 8 em branch separada ou após Webpack 5
 4. Criar `.eslintrc.json` (separado do upgrade de deps)
+5. Adicionar `engines` Node em `package.json`
