@@ -26,12 +26,16 @@
   "homepage": "https://github.com/FelipeEnne/weader-app#readme",
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.20.1",
-    "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11"
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "2.22.1",
+    "webpack": "^4.47.0",
+    "webpack-cli": "^3.3.12"
   },
-  "dependencies": {
-    "@primer/octicons": "^9.5.0"
+  "overrides": {
+    "loader-utils": "1.4.2",
+    "lodash": "4.17.21",
+    "minimatch": "3.1.2",
+    "brace-expansion": "1.1.12",
+    "ansi-regex": "5.0.1"
   }
 }
