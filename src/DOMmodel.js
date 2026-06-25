@@ -1,6 +1,5 @@
 import getCity from './returnCity';
 
-
 async function getAPIData() {
   const API = '0571f1a1044888615170693425198c8d';
   const data = await fetch(

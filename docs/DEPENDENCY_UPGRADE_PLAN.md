@@ -7,11 +7,64 @@ Documento gerado após diagnóstico e aplicação dos **Lotes seguros 1 e 2** (j
 | Aspecto | Valor |
 |---------|-------|
 | App | Frontend-only, vanilla JavaScript (ES modules) |
-| Bundler | Webpack 4 (`webpack.config.js`) |
-| Linter | ESLint 6 + eslint-config-airbnb-base + eslint-plugin-import |
+| Bundler | Webpack 5 (`webpack.config.js`) |
+| Linter | ESLint 8 + eslint-config-airbnb-base 15 + eslint-plugin-import |
 | Gerenciador | npm + `package-lock.json` |
 | Testes | Placeholder (`npm test` sempre falha) |
 | CI | Não configurado |
+
+## Resultado do Lote 3 — Grupo B (jun/2026)
+
+Migração para eliminar os 7 alertas abertos do Dependabot.
+
+| Métrica | Antes (pós-Lote 2) | Depois (Lote 3) |
+|---------|-------------------|-----------------|
+| Total `npm audit` | 27 | **0** |
+| `npm run build` | OK (webpack 4.47) | OK (webpack 5.107.2) |
+| `npx eslint src/` | Sem config | OK (`.eslintrc.json`) |
+
+### Dependências diretas atualizadas
+
+| Pacote | Antes | Depois |
+|--------|-------|--------|
+| `webpack` | 4.47.0 | **5.107.2** |
+| `webpack-cli` | 3.3.12 | **5.1.4** |
+| `eslint` | 6.8.0 | **8.57.1** |
+| `eslint-config-airbnb-base` | 14.2.1 | **15.0.0** |
+| `eslint-plugin-import` | 2.22.1 | **2.29.1** |
+
+### Alertas Dependabot resolvidos
+
+| Alerta | Pacote | Solução |
+|--------|--------|---------|
+| #83 Prototype Pollution flatted | `flatted` | ESLint 8 + override `3.4.2` |
+| #40 Uncontrolled resource consumption | `braces` | Webpack 5 |
+| #79 serialize-javascript RCE | `serialize-javascript` | Webpack 5 |
+| #87, #56 tmp path traversal | `tmp` | ESLint 8 (remove `inquirer`/`tmp` antigo) |
+| #92 js-yaml DoS | `js-yaml` | Override `5.1.0` |
+| #62 elliptic risky crypto | `elliptic` | Webpack 5 (remove polyfills crypto) |
+
+### Overrides finais (mínimos)
+
+```json
+"overrides": {
+  "lodash": "4.18.1",
+  "minimatch": "3.1.5",
+  "brace-expansion": "1.1.13",
+  "flatted": "3.4.2",
+  "js-yaml": "5.1.0"
+}
+```
+
+### Arquivos novos/alterados
+
+- `.eslintrc.json` — config airbnb-base, `linebreak-style: off` (Windows)
+- `src/*.js` — apenas correções de estilo ESLint (`eol-last`, linha em branco)
+- `dist/main.js` — rebuild Webpack 5
+
+### Dependabot pausado
+
+Após merge deste commit, o GitHub deve retomar PRs do Dependabot automaticamente. Se não retomar em 24h, reativar em **Settings → Code security → Dependabot**.
 
 ## Resultado do Lote 2 (jun/2026)
 
@@ -218,25 +271,19 @@ Deve ser feito agora ou depois: Opcional — branch separada
 |------|--------|--------|
 | 0 | Concluído | `npm install` + baseline audit/build |
 | 1 | Concluído | Grupo A direto + overrides iniciais + remoção octicons |
-| 2 | **Concluído** | `npm audit fix` + overrides expandidos; 41 → 27 vulns; 0 critical |
-| 3 | Pendente | Grupo B — Webpack 5 + webpack-cli (branch `feat/webpack-5-migration`) |
-| 4 | Pendente | Grupo B — ESLint 8 + airbnb-base 15 + `.eslintrc.json` |
+| 2 | Concluído | `npm audit fix` + overrides expandidos; 41 → 27 vulns |
+| 3 | **Concluído** | Webpack 5 + ESLint 8; 27 → **0** vulns; alertas Dependabot |
+| 4 | Pendente | Opcional: ESLint 9 flat config, Vite, CI build |
 
-## Branch para Lote 3 (Webpack 5)
+## Branch Webpack 5 (concluída no Lote 3)
 
-Criar branch dedicada **após commit do Lote 2**:
+A migração foi feita diretamente em `development`. Referência histórica:
 
 ```bash
-git checkout -b feat/webpack-5-migration
-npm install webpack@5 webpack-cli@5 --save-dev
-# Ajustar webpack.config.js se necessário
+npm install webpack@5 webpack-cli@5 eslint@8 eslint-config-airbnb-base@15 eslint-plugin-import@2.29.1 --save-dev
 npm run build
-npm audit
+npm audit   # 0 vulnerabilities
 ```
-
-Arquivos afetados: `package.json`, `package-lock.json`, `webpack.config.js`, `dist/main.js`.
-
-`webpack-cli@5` é mais conservador que `7.x` sugerido pelo `audit fix --force`.
 
 ## Riscos conhecidos
 
@@ -247,8 +294,7 @@ Arquivos afetados: `package.json`, `package-lock.json`, `webpack.config.js`, `di
 
 ## Próximos passos
 
-1. Commit do Lote 2 (`package.json`, `package-lock.json`, `dist/main.js`, `docs/DEPENDENCY_UPGRADE_PLAN.md`)
-2. Abrir branch `feat/webpack-5-migration` para Webpack 5
-3. ESLint 8 em branch separada ou após Webpack 5
-4. Criar `.eslintrc.json` (separado do upgrade de deps)
-5. Adicionar `engines` Node em `package.json`
+1. Commit do Lote 3 (ver mensagem sugerida abaixo)
+2. Merge em `main`/`development` para fechar alertas no GitHub
+3. Opcional: ESLint 9 + flat config; migração Vite; CI com build automático
+4. Adicionar `engines` Node em `package.json`
