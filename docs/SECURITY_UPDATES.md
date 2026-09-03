@@ -114,18 +114,59 @@ Pacotes ainda reportados pelo `npm audit` após Lote 1:
 
 ---
 
+## Lote código + audit — Aplicado
+
+**Data:** 03/09/2026
+
+### Correções de aplicação
+
+| Item | Mudança |
+|------|---------|
+| API key | Removida do source; injetada no build via `OPENWEATHER_API_KEY` (`DefinePlugin`) |
+| Query injection | `encodeURIComponent` na cidade |
+| XSS DOM | `innerHTML` → `textContent` |
+| Mixed content | Ícones OpenWeatherMap em `https://` + allowlist do código do ícone |
+| Erro de API | Early return quando `!response.ok` ou cidade ausente |
+| Bundle | Webpack `mode: 'production'` (sem `eval`) |
+
+### Dependências
+
+| Pacote | Override anterior | Override novo | Motivo |
+|--------|-------------------|---------------|--------|
+| `fast-uri` | 3.1.5 | 3.1.6 | GHSA host confusion / SSRF-class |
+| `browserslist` | (sem pin) | 4.28.7 | GHSA OOM / prototype write |
+
+### Validação
+
+| Comando | Resultado |
+|---------|-----------|
+| `npm audit` | **0** vulnerabilidades |
+| `OPENWEATHER_API_KEY=… npm run build` | OK — `dist/main.js` ~2 KiB, minificado |
+
+### Arquivos alterados
+
+- `src/DOMmodel.js`, `webpack.config.js`
+- `package.json`, `package-lock.json`
+- `dist/main.js`
+- `.env.example`, `docs/SETUP.md`, `docs/SECURITY_UPDATES.md`
+
+### Pós-merge (manual)
+
+Revogar/rotacionar a chave OpenWeatherMap que já esteve no repositório e rebuildar com a chave nova.
+
+---
+
 ## Sugestão de commit
 
 ```bash
-git add package.json package-lock.json dist/main.js docs/DEPENDENCY_UPGRADE_PLAN.md docs/SECURITY_UPDATES.md
-git commit -m "fix: update low-risk dependencies"
+git add src/DOMmodel.js webpack.config.js package.json package-lock.json dist/main.js .env.example docs/SETUP.md docs/SECURITY_UPDATES.md
+git commit -m "$(cat <<'EOF'
+fix: harden API usage and clear npm audit highs
+
+Move the OpenWeatherMap key to build-time env, encode city input,
+prefer textContent/HTTPS icons, and bump fast-uri/browserslist.
+EOF
+)"
 ```
 
-Plano Grupo B (somente documentação, sem mudanças de código):
-
-```bash
-git add docs/DEPENDENCY_UPGRADE_PLAN.md
-git commit -m "docs: document major dependency upgrade plan"
-```
-
-Ou um único commit combinando deps + docs, conforme preferência do mantenedor.
+Não incluir `.env` no stage (está no `.gitignore`).

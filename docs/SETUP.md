@@ -23,14 +23,23 @@ O comando `npm install` instala Webpack, ESLint e demais dependências listadas 
 
 ## Configuração de variáveis de ambiente
 
-**Estado atual:** o projeto **não utiliza** arquivo `.env`. A chave da API OpenWeatherMap está hardcoded em `src/DOMmodel.js`.
-
-**Padrão recomendado para o futuro** (ainda não implementado):
+A chave da OpenWeatherMap **não** deve ficar no source. O Webpack injeta `OPENWEATHER_API_KEY` no bundle em tempo de build.
 
 ```bash
-# .env (exemplo — NÃO commitar)
-OPENWEATHER_API_KEY=sua_chave_aqui
+cp .env.example .env
+# edite .env e preencha OPENWEATHER_API_KEY=sua_chave_aqui
 ```
+
+Antes de `npm run build` ou `npm run watch`, exporte a variável (ou carregue o `.env` no shell):
+
+```bash
+export OPENWEATHER_API_KEY=sua_chave_aqui
+npm run build
+```
+
+`.env` está no `.gitignore` e **não** deve ser commitado. Use `.env.example` apenas como modelo (sem valor real).
+
+> Em um app 100% client-side, a chave ainda aparece no bundle público (`dist/main.js`). Revogue chaves vazadas e, para segredo real, use um proxy no backend.
 
 Para obter uma chave própria, registre-se em [OpenWeatherMap](https://openweathermap.org/api) e gere uma API key na área de membros.
 
@@ -46,7 +55,7 @@ Não existem.
 
 ### Opção 1 — Abrir HTML diretamente (conforme README)
 
-1. Certifique-se de que `dist/main.js` está atualizado (`npm run build`).
+1. Defina `OPENWEATHER_API_KEY` e gere `dist/main.js` (`export OPENWEATHER_API_KEY=... && npm run build`).
 2. Abra `dist/index.html` no navegador.
 
 ```bash
@@ -62,9 +71,10 @@ xdg-open dist/index.html
 
 ### Opção 2 — Desenvolvimento com rebuild automático
 
-Em um terminal:
+Em um terminal (com a chave exportada):
 
 ```bash
+export OPENWEATHER_API_KEY=sua_chave_aqui
 npm run watch
 ```
 
@@ -83,10 +93,11 @@ Acesse `http://localhost:8080` (ou a porta indicada).
 ### Opção 3 — Build único
 
 ```bash
+export OPENWEATHER_API_KEY=sua_chave_aqui
 npm run build
 ```
 
-Gera/atualiza `dist/main.js` a partir de `src/`.
+Gera/atualiza `dist/main.js` a partir de `src/`. Sem a variável, o Webpack falha de propósito.
 
 ## Fluxo de desenvolvimento típico
 
